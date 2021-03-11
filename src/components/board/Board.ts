@@ -124,6 +124,10 @@ class Board {
   colMatch = (state: string[], i: number): boolean => {
     let matches = 0;
 
+    if(i >= 3) { 
+      return false;
+    }
+
     for (let j = 1; j < this.cols; j++) {
       if (state[i] && state[i] === state[i + j * this.rows]) {
         matches++;

@@ -1,7 +1,10 @@
 /**
  * Checks if two arrays are equal
  */
-export function isEqual(a: string[], b: string[]): boolean {
+export function isEqual(
+  a: string[] | number[],
+  b: string[] | number[]
+): boolean {
   if (!a || !b) {
     return false;
   }

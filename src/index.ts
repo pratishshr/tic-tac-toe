@@ -2,7 +2,7 @@ import './index.css';
 
 import Game from './components/Game';
 
-import * as gameConstants from './constants/game';
+import * as settings from './constants/settings';
 
 function init(): void {
   let nextFrame = Date.now();
@@ -16,7 +16,7 @@ function init(): void {
     if (nextFrame < now) {
       game.loop();
 
-      nextFrame = now + gameConstants.TICK_RATE;
+      nextFrame = now + settings.TICK_RATE;
     }
 
     requestAnimationFrame(nextAnimationFrame);

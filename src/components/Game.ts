@@ -1,23 +1,26 @@
 import Board from './board';
 import Status from './status';
 
+import * as dom from '../utils/dom';
+
 import GameState from '../enums/GameState';
 
 class Game {
-  gameState: GameState;
-  container: HTMLElement;
-
   board: Board;
   status: Status;
+  container: HTMLElement;
+  gameState = GameState.IN_PROGRESS;
 
   constructor(container: HTMLElement) {
     this.init(container);
   }
 
   init = (container: HTMLElement): void => {
-    this.container = document.createElement('div');
-    this.container.className = 'container';
-    container.appendChild(this.container);
+    this.container = dom.create({
+      element: 'div',
+      className: 'container',
+      appendTo: container,
+    });
 
     this.start();
   };
@@ -42,7 +45,7 @@ class Game {
     this.status.remove();
 
     this.start();
-    this.gameState = GameState.INIT;
+    this.gameState = GameState.IN_PROGRESS;
   };
 
   // Main Game Loop

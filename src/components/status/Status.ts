@@ -1,6 +1,7 @@
 import Cell from '../../enums/Cell';
 import GameState from '../../enums/GameState';
 
+import * as dom from '../../utils/dom';
 interface Options {
   onRestart: () => void;
 }
@@ -20,27 +21,29 @@ class Status {
   }
 
   init = (container: HTMLElement, options: Options): void => {
-    this.container = document.createElement('div');
-    this.container.className = 'status';
-    this.container.innerHTML = `
-      <div class="game-over hidden">
-        <div class="title">Congratulations!</div>
-        <div class="sub-title">Player wins</div>
-        <button class="restart">Play Again!</button>
-      </div>
-      <div class="turns">
-        <div class="players">
-          <div class="player"> 
-            P1 (X)
-          </div>
-          <div class="player">
-            P2 (O)
+    this.container = dom.create({
+      element: 'div',
+      className: 'status',
+      appendTo: container,
+      innerHTML: `
+        <div class="game-over hidden">
+          <div class="title">Congratulations!</div>
+          <div class="sub-title">Player wins</div>
+          <button class="restart">Play Again!</button>
+        </div>
+        <div class="turns">
+          <div class="players">
+            <div class="player"> 
+              P1 (X)
+            </div>
+            <div class="player">
+              P2 (O)
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `,
+    });
 
-    container.appendChild(this.container);
     const button = document.getElementsByClassName('restart');
     button[0].addEventListener('click', options.onRestart);
   };
@@ -86,6 +89,7 @@ class Status {
     if (options.currentTurn === this.prevTurn) {
       return;
     }
+
     if (options.gameState === GameState.GAME_OVER) {
       if (this.prevGameState === options.gameState) {
         return;

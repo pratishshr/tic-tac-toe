@@ -1,6 +1,9 @@
 import Cell from '../../enums/Cell';
 import GameState from '../../enums/GameState';
 
+import * as dom from '../../utils/dom';
+import * as array from '../../utils/array';
+
 interface BoardOptions {
   rows: number;
   cols: number;
@@ -10,64 +13,66 @@ interface BoardOptions {
 interface UpdateOptions {
   gameState: GameState;
 }
-class Board {
-  currentTurn = Cell.X;
 
+class Board {
   rows: number;
   cols: number;
   state: string[];
   prevState: string[];
+  currentTurn = Cell.X;
   container: HTMLElement;
 
   onGameOver: () => void;
 
   constructor(container: HTMLElement, options: BoardOptions) {
+    this.rows = options.rows;
+    this.cols = options.cols;
+    this.onGameOver = options.onGameOver;
+
     this.init(container, options);
   }
 
   init = (container: HTMLElement, options: BoardOptions): void => {
-    const state = this.initState(options);
-    const boardContainer = this.createBoard(container);
+    this.state = this.initState(options);
+    this.container = this.createBoard(container);
 
-    this.renderBoard(boardContainer, state);
-    this.onGameOver = options.onGameOver;
+    this.renderBoard(this.container, this.state);
   };
 
   initState = (options: BoardOptions): string[] => {
-    this.rows = options.rows;
-    this.cols = options.cols;
-    this.state = Array(options.rows * options.cols).fill('');
-
-    return this.state;
+    return Array(options.rows * options.cols).fill('');
   };
 
   createBoard = (container: HTMLElement): HTMLElement => {
-    this.container = document.createElement('div');
-    this.container.className = 'board';
-
-    container.appendChild(this.container);
-
-    return this.container;
+    return dom.create({
+      element: 'div',
+      className: 'board',
+      appendTo: container,
+    });
   };
 
   renderBoard = (container: HTMLElement, state: string[]): void => {
-    let row = document.createElement('div');
-    row.className = 'row row-0';
+    let row = dom.create({
+      element: 'div',
+      className: 'row row-0',
+    });
 
     for (let i = 0; i < state.length + 1; i++) {
-      const cell = document.createElement('div');
-      cell.className = `cell col-${i % this.cols}`;
-      cell.onclick = () => {
-        this.onCellClick(i);
-      };
-
-      row.appendChild(cell);
+      dom.create({
+        element: 'div',
+        className: `cell col-${i % this.cols}`,
+        appendTo: row,
+        onClick: () => {
+          this.onCellClick(i);
+        },
+      });
 
       if ((i + 1) % this.cols === 0) {
         container.appendChild(row);
-
-        row = document.createElement('div');
-        row.className = `row row-${(i + 1) / this.rows}`;
+        row = dom.create({
+          element: 'div',
+          className: `row row-${(i + 1) / this.rows}`,
+        });
       }
     }
   };
@@ -78,26 +83,13 @@ class Board {
     }
 
     this.state[index] = this.currentTurn;
-    this.currentTurn = this.currentTurn === Cell.X ? Cell.O : Cell.X;
+
+    if (this.currentTurn === Cell.X) {
+      this.currentTurn = Cell.O;
+    } else {
+      this.currentTurn = Cell.X;
+    }
   };
-
-  isEqual(a: string[], b: string[]): boolean {
-    if (!a || !b) {
-      return false;
-    }
-
-    if (a.length !== b.length) {
-      return false;
-    }
-
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-
-    return true;
-  }
 
   updateBoard = (state: string[]): void => {
     const cells = this.container.getElementsByClassName('cell');
@@ -146,15 +138,35 @@ class Board {
   };
 
   diagonalMatch = (state: string[], i: number): boolean => {
-    if (state[0] && state[0] === state[4] && state[0] === state[8]) {
-      return true;
+    if (i === 0) {
+      let matches = 0;
+      for (let j = 1; j < this.cols; j++) {
+        if (state[i] && state[i] === state[4 * j]) {
+          matches++;
+        }
+      }
+      if (matches === this.rows - 1) {
+        return true;
+      }
     }
 
-    if (state[2] && state[2] === state[4] && state[2] === state[6]) {
-      return true;
+    if (i === 2) {
+      let matches = 0;
+      for (let j = 1; j < this.cols; j++) {
+        if (state[i] && state[i] === state[2 * (j + 1)]) {
+          matches++;
+        }
+      }
+      if (matches === this.rows - 1) {
+        return true;
+      }
     }
 
     return false;
+  };
+
+  isFull = (state: string[]): boolean => {
+    return state.filter((s) => s).length === this.rows * this.cols;
   };
 
   checkWinner = (state: string[]): void => {
@@ -169,14 +181,14 @@ class Board {
       }
     }
 
-    if (state.filter((s) => s).length === this.rows * this.cols) {
+    if (this.isFull(state)) {
       this.onGameOver();
       this.currentTurn = Cell.NONE;
     }
   };
 
   update = (options: UpdateOptions): void => {
-    if (this.isEqual(this.state, this.prevState)) {
+    if (array.isEqual(this.state, this.prevState)) {
       return;
     }
 

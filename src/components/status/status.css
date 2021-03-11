@@ -1,0 +1,17 @@
+.status {
+  width: 200px;
+  height: 100px;
+  margin-top: 10px;
+}
+
+.turn-title {
+  font-size: 25px;
+  text-align: center;
+}
+
+.players {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,0 +1,32 @@
+.board {
+  width: 300px;
+  height: 300px;
+}
+
+.row {
+  display: flex;
+}
+
+.row-0,
+.row-1 {
+  border-bottom: 2px solid #e1e1e1;
+}
+
+.col-0,
+.col-1 {
+  border-right: 2px solid #e1e1e1;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  cursor: pointer;
+  font-size: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell:hover {
+  background: #33353a;
+}

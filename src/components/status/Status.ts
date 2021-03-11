@@ -2,6 +2,7 @@ import Cell from '../../enums/Cell';
 import GameState from '../../enums/GameState';
 
 import * as dom from '../../utils/dom';
+
 interface Options {
   onRestart: () => void;
 }
@@ -10,6 +11,7 @@ interface UpdateOptions {
   currentTurn: Cell;
   gameState: GameState;
 }
+
 class Status {
   container: HTMLElement;
 

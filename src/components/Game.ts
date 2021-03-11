@@ -4,7 +4,7 @@ import Status from './status';
 import GameState from '../enums/GameState';
 
 class Game {
-  state: GameState;
+  gameState: GameState;
   container: HTMLElement;
 
   board: Board;
@@ -20,16 +20,26 @@ class Game {
     container.appendChild(this.container);
 
     this.status = new Status(this.container);
+
     this.board = new Board(this.container, {
       rows: 3,
       cols: 3,
+      onGameOver: () => this.updateGameState(GameState.GAME_OVER),
     });
+  };
+
+  updateGameState = (gameState: GameState): void => {
+    this.gameState = gameState;
   };
 
   // Main Game Loop
   loop = (): void => {
     this.board.update();
-    this.status.update();
+
+    this.status.update({
+      gameState: this.gameState,
+      currentTurn: this.board.currentTurn,
+    });
   };
 }
 

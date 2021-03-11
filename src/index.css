@@ -1,13 +1,18 @@
+html * {
+  color: #e1e1e1;
+  font-family: 'Nunito';
+}
+
 body {
   margin: 0;
   padding: 0;
-  color: #e1e1e1;
+
   background: #161719;
+  font-family: 'Nunito';
 }
 .container {
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }

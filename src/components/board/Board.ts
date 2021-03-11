@@ -1,8 +1,10 @@
 import Cell from '../../enums/Cell';
+import GameState from '../../enums/GameState';
 
 interface BoardOptions {
   rows: number;
   cols: number;
+  onGameOver: () => void;
 }
 
 class Board {
@@ -14,6 +16,8 @@ class Board {
   prevState: string[];
   container: HTMLElement;
 
+  onGameOver: () => void;
+
   constructor(container: HTMLElement, options: BoardOptions) {
     this.init(container, options);
   }
@@ -23,6 +27,7 @@ class Board {
     const boardContainer = this.createBoard(container);
 
     this.renderBoard(boardContainer, state);
+    this.onGameOver = options.onGameOver;
   };
 
   initState = (options: BoardOptions): string[] => {
@@ -65,6 +70,10 @@ class Board {
   };
 
   onCellClick = (index: number): void => {
+    if (this.state[index]) {
+      return;
+    }
+
     this.state[index] = this.currentTurn;
     this.currentTurn = this.currentTurn === Cell.X ? Cell.O : Cell.X;
   };
@@ -87,7 +96,7 @@ class Board {
     return true;
   }
 
-  updateBoard = (state: string[]) => {
+  updateBoard = (state: string[]): void => {
     const cells = this.container.getElementsByClassName('cell');
 
     for (let i = 0; i < cells.length; i++) {
@@ -97,12 +106,38 @@ class Board {
     this.prevState = [...this.state];
   };
 
+  rowMatch = (state: string[], i: number): boolean => {
+    let matches = 0;
+
+    for (let j = 1; j < this.cols; j++) {
+      if (state[i] && state[i] === state[i + j]) {
+        matches++;
+      }
+    }
+
+    if (matches == this.rows - 1) {
+      return true;
+    }
+
+    return false;
+  };
+
+  checkWinner = (state: string[]): void => {
+    for (let i = 0; i < state.length; i = i + this.rows) {
+      if (this.rowMatch(state, i)) {
+        this.onGameOver();
+        return;
+      }
+    }
+  };
+
   update = (): void => {
     if (this.isEqual(this.state, this.prevState)) {
       return;
     }
 
     this.updateBoard(this.state);
+    this.checkWinner(this.state);
   };
 }
 

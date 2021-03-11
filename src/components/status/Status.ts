@@ -71,7 +71,12 @@ class Status {
       const player = winner === Cell.X ? '1' : '2';
       message[0].innerHTML = `Player ${player} (${winner}) wins!`;
     } else {
-      message[0].innerHTML = "It's a tie";
+      const titleContainer = gameOverContainer[0].getElementsByClassName(
+        'title'
+      );
+
+      titleContainer[0].innerHTML = 'Game Over';
+      message[0].innerHTML = "It's a tie!";
     }
 
     gameOverContainer[0].className = 'game-over';
@@ -86,7 +91,9 @@ class Status {
         return;
       }
 
-      this.onGameOver(this.prevTurn);
+      const winner = options.currentTurn === Cell.NONE ? '' : this.prevTurn;
+      this.onGameOver(winner);
+
       this.prevGameState = options.gameState;
       return;
     }

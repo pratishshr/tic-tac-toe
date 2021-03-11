@@ -112,6 +112,10 @@ class Board {
   rowMatch = (state: string[], i: number): boolean => {
     let matches = 0;
 
+    if (i % this.rows !== 0) {
+      return false;
+    }
+
     for (let j = 1; j < this.cols; j++) {
       if (state[i] && state[i] === state[i + j]) {
         matches++;
@@ -125,12 +129,49 @@ class Board {
     return false;
   };
 
+  colMatch = (state: string[], i: number): boolean => {
+    let matches = 0;
+
+    for (let j = 1; j < this.cols; j++) {
+      if (state[i] && state[i] === state[i + j * this.rows]) {
+        matches++;
+      }
+    }
+
+    if (matches == this.rows - 1) {
+      return true;
+    }
+
+    return false;
+  };
+
+  diagonalMatch = (state: string[], i: number): boolean => {
+    if (state[0] && state[0] === state[4] && state[0] === state[8]) {
+      return true;
+    }
+
+    if (state[2] && state[2] === state[4] && state[2] === state[6]) {
+      return true;
+    }
+
+    return false;
+  };
+
   checkWinner = (state: string[]): void => {
-    for (let i = 0; i < state.length; i = i + this.rows) {
-      if (this.rowMatch(state, i)) {
+    for (let i = 0; i < state.length; i++) {
+      if (
+        this.rowMatch(state, i) ||
+        this.colMatch(state, i) ||
+        this.diagonalMatch(state, i)
+      ) {
         this.onGameOver();
         return;
       }
+    }
+
+    if (state.filter((s) => s).length === this.rows * this.cols) {
+      this.onGameOver();
+      this.currentTurn = Cell.NONE;
     }
   };
 

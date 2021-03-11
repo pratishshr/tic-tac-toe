@@ -146,6 +146,10 @@ class Board {
     this.updateBoard(this.state);
     this.checkWinner(this.state);
   };
+
+  remove = (): void => {
+    this.container.remove();
+  };
 }
 
 export default Board;

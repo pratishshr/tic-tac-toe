@@ -19,8 +19,13 @@ class Game {
     this.container.className = 'container';
     container.appendChild(this.container);
 
-    this.status = new Status(this.container);
+    this.start();
+  };
 
+  start = (): void => {
+    this.status = new Status(this.container, {
+      onRestart: this.restart,
+    });
     this.board = new Board(this.container, {
       rows: 3,
       cols: 3,
@@ -30,6 +35,14 @@ class Game {
 
   updateGameState = (gameState: GameState): void => {
     this.gameState = gameState;
+  };
+
+  restart = (): void => {
+    this.board.remove();
+    this.status.remove();
+
+    this.start();
+    this.gameState = GameState.INIT;
   };
 
   // Main Game Loop

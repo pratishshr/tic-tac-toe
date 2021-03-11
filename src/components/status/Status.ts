@@ -1,6 +1,10 @@
 import Cell from '../../enums/Cell';
 import GameState from '../../enums/GameState';
 
+interface Options {
+  onRestart: () => void;
+}
+
 interface UpdateOptions {
   currentTurn: Cell;
   gameState: GameState;
@@ -11,17 +15,18 @@ class Status {
   prevTurn: Cell;
   prevGameState: GameState;
 
-  constructor(container: HTMLElement) {
-    this.init(container);
+  constructor(container: HTMLElement, options: Options) {
+    this.init(container, options);
   }
 
-  init = (container: HTMLElement): void => {
+  init = (container: HTMLElement, options: Options): void => {
     this.container = document.createElement('div');
     this.container.className = 'status';
     this.container.innerHTML = `
       <div class="game-over hidden">
-        <div class="title">Game Over!</div>
-        <div class="sub-title">Player 1 (X) wins!</div>
+        <div class="title">Congratulations!</div>
+        <div class="sub-title">Player wins</div>
+        <button class="restart">Play Again!</button>
       </div>
       <div class="turns">
         <div class="players">
@@ -36,6 +41,8 @@ class Status {
     `;
 
     container.appendChild(this.container);
+    const button = document.getElementsByClassName('restart');
+    button[0].addEventListener('click', options.onRestart);
   };
 
   updateTurn = (turn: Cell): void => {
@@ -54,11 +61,18 @@ class Status {
     this.prevTurn = turn;
   };
 
-  onGameOver = (): void => {
+  onGameOver = (winner: string): void => {
     const gameOverContainer = this.container.getElementsByClassName(
       'game-over'
     );
     const message = gameOverContainer[0].getElementsByClassName('sub-title');
+
+    if (winner) {
+      const player = winner === Cell.X ? '1' : '2';
+      message[0].innerHTML = `Player ${player} (${winner}) wins!`;
+    } else {
+      message[0].innerHTML = "It's a tie";
+    }
 
     gameOverContainer[0].className = 'game-over';
   };
@@ -67,14 +81,21 @@ class Status {
     if (options.currentTurn === this.prevTurn) {
       return;
     }
-
     if (options.gameState === GameState.GAME_OVER) {
-      this.onGameOver();
+      if (this.prevGameState === options.gameState) {
+        return;
+      }
+
+      this.onGameOver(this.prevTurn);
       this.prevGameState = options.gameState;
       return;
     }
 
     this.updateTurn(options.currentTurn);
+  };
+
+  remove = (): void => {
+    this.container.remove();
   };
 }
 

@@ -1,7 +1,12 @@
 .status {
-  width: 300px;
+  width: 600px;
   margin-top: 20px;
   margin-bottom: 40px;
+}
+
+.turns {
+  width: 300px;
+  margin: 0 auto;
 }
 
 .turn-title {
@@ -37,4 +42,22 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.restart {
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  background: none;
+  margin-top: 20px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #e1e1e1;
+  transform: scale(1);
+  transition: transform 0.1s ease-in-out;
+}
+
+.restart:hover {
+  transform: scale(1.1);
+  transition: transform 0.1s ease-in-out;
 }

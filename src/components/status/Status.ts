@@ -19,7 +19,7 @@ class Status {
     this.container = document.createElement('div');
     this.container.className = 'status';
     this.container.innerHTML = `
-      <div class="game-over">
+      <div class="game-over hidden">
         <div class="title">Game Over!</div>
         <div class="sub-title">Player 1 (X) wins!</div>
       </div>
@@ -55,14 +55,16 @@ class Status {
   };
 
   onGameOver = (): void => {
-    console.log('GameOver');
+    const gameOverContainer = this.container.getElementsByClassName(
+      'game-over'
+    );
+    const message = gameOverContainer[0].getElementsByClassName('sub-title');
+
+    gameOverContainer[0].className = 'game-over';
   };
 
   update = (options: UpdateOptions): void => {
-    if (
-      options.currentTurn === this.prevTurn ||
-      this.prevGameState === options.gameState
-    ) {
+    if (options.currentTurn === this.prevTurn) {
       return;
     }
 

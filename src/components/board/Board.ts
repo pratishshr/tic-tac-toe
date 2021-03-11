@@ -7,6 +7,9 @@ interface BoardOptions {
   onGameOver: () => void;
 }
 
+interface UpdateOptions {
+  gameState: GameState;
+}
 class Board {
   currentTurn = Cell.X;
 
@@ -131,8 +134,12 @@ class Board {
     }
   };
 
-  update = (): void => {
+  update = (options: UpdateOptions): void => {
     if (this.isEqual(this.state, this.prevState)) {
+      return;
+    }
+
+    if (options.gameState === GameState.GAME_OVER) {
       return;
     }
 

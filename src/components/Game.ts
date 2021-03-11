@@ -34,7 +34,9 @@ class Game {
 
   // Main Game Loop
   loop = (): void => {
-    this.board.update();
+    this.board.update({
+      gameState: this.gameState,
+    });
 
     this.status.update({
       gameState: this.gameState,

@@ -1,32 +1,32 @@
-## Tic Tac Toe
+# Tic Tac Toe
 
 Demo: https://pratishshr.github.io/tic-tac-toe/
 
-### Steps
+## Usage
 
 Install `yarn` for downloading dependencies
 
-1. Install dependencies
+### 1. Install dependencies
 ```sh
 $ yarn install
 ```
 
-2. Start development server
+### 2. Start development server
 ```sh
 $ yarn start
 ```
 
-3. Run tests
+### 3. Run tests
 ```sh
 $ yarn test
 ```
 
-3. Build for production
+### 3. Build for production
 ```sh
 $ yarn build
 ```
 
-4. Deploy to github pages
+### 4. Deploy to github pages
 ```sh
 $ yarn deploy
 ```

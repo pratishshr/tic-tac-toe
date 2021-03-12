@@ -66,7 +66,7 @@ describe('game.hasMatch', () => {
     });
   })
 
-  test('should return false if there is no winning state', () => {
+  test('should return false if there are no winning states', () => {
     const inputs = [
       {
         state: [
@@ -105,7 +105,7 @@ describe('game.hasMatch', () => {
 });
 
 describe('game.isFull', () => {
-  test('should return true when if the state is full', () => {
+  test('should return true if the state is full', () => {
     const inputs = [
       {
         state: [
@@ -135,7 +135,7 @@ describe('game.isFull', () => {
     });
   });
 
-  test('should return false when state is not full', () => {
+  test('should return false if state is not full', () => {
     const inputs = [
       {
         state: [

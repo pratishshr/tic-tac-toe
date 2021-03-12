@@ -1,6 +1,6 @@
 import * as array from '../../src/utils/array';
 
-describe('utils.isEqual', () => {
+describe('array.isEqual', () => {
   test('should return true when two arrays have same data', () => {
     const inputs = [
       { a: ['a'], b: ['a'] },

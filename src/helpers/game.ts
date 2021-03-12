@@ -1,5 +1,13 @@
+/**
+ * Helper for the tic-tac-toe game logic.
+ * Currently satisfies for a 3x3 board. Could be extended for a larger size boards.
+ */
+
 const SIZE = 3;
 
+/**
+ * Returns true if the row has a match in a given index.
+ */
 export function rowMatch(state: string[], rowIndex: number): boolean {
   let matches = 0;
 
@@ -20,6 +28,9 @@ export function rowMatch(state: string[], rowIndex: number): boolean {
   return false;
 }
 
+/**
+ * Returns true if the column has a match in a given index.
+ */
 export function colMatch(state: string[], colIndex: number): boolean {
   let matches = 0;
 
@@ -40,6 +51,9 @@ export function colMatch(state: string[], colIndex: number): boolean {
   return false;
 }
 
+/**
+ * Returns true if one of the diagonal has a match.
+ */
 export function diagonalMatch(state: string[], index: number): boolean {
   if (index === 0) {
     let matches = 0;
@@ -68,10 +82,16 @@ export function diagonalMatch(state: string[], index: number): boolean {
   return false;
 }
 
+/**
+ * Returns true if the board is full.
+ */
 export function isFull(state: string[]): boolean {
   return state.filter((s) => s).length === SIZE * SIZE;
 }
 
+/**
+ * Returns true if there is atleast one match in the board.
+ */
 export function hasMatch(state: string[]): boolean {
   for (let i = 0; i < state.length; i++) {
     if (

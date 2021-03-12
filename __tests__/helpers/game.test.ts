@@ -1,14 +1,110 @@
-import Board from '../../src/components/board/Board';
+import * as game from '../../src/helpers/game';
 
-const board = new Board(null, {
-  cols: 3,
-  rows: 3,
-  onGameOver: () => {
-    return;
-  },
+describe('game.hasMatch', () => {
+  test('should return true if there is a winning state', () => {
+    const inputs = [
+      {
+        state: [
+          'X', 'X', 'X',
+          '', '', '',
+          '', '', '',
+        ]
+      },
+      {
+        state: [
+          '', '', '',
+          'X', 'X', 'X',
+          '', '', '',
+        ]
+      },
+      {
+        state: [
+          '', '', '',
+          '', '', '',
+          'X', 'X', 'X',
+        ],
+      },
+      {
+        state: [
+          'X', '', '',
+          'X', '', '',
+          'X', '', '',
+        ],
+      },
+      {
+        state: [
+          '', 'X', '',
+          '', 'X', '',
+          '', 'X', '',
+        ],
+      },
+      {
+        state: [
+          '', '', 'X',
+          '', '', 'X',
+          '', '', 'X',
+        ],
+      },
+      {
+        state: [
+          '', '', 'X',
+          '', 'X', '',
+          'X', '', '',
+        ],
+      },
+      {
+        state: [
+          'X', '', '',
+          '', 'X', '',
+          '', '', 'X',
+        ],
+      }
+    ];
+
+    inputs.forEach((input) => {
+      expect(game.hasMatch(input.state)).toBe(true);
+    });
+  })
+
+  test('should return false if there is no winning state', () => {
+    const inputs = [
+      {
+        state: [
+          'X', 'O', 'X',
+          'O', 'O', 'X',
+          'X', 'X', 'O',
+        ]
+      },
+      {
+        state: [
+          'X', 'X', 'O',
+          'O', 'X', 'X',
+          'X', 'O', 'O',
+        ]
+      },
+      {
+        state: [
+          'O', 'O', 'X',
+          'X', 'X', 'O',
+          'O', 'X', 'X',
+        ],
+      },
+      {
+        state: [
+          'X', 'X', 'O',
+          'O', 'O', 'X',
+          'X', 'O', 'X',
+        ],
+      }
+    ];
+
+    inputs.forEach((input) => {
+      expect(game.hasMatch(input.state)).toBe(false);
+    });
+  })
 });
 
-describe('Board.isFull', () => {
+describe('game.isFull', () => {
   test('should return true when if the state is full', () => {
     const inputs = [
       {
@@ -35,7 +131,7 @@ describe('Board.isFull', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.isFull(input.state)).toBe(true);
+      expect(game.isFull(input.state)).toBe(true);
     });
   });
 
@@ -65,12 +161,12 @@ describe('Board.isFull', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.isFull(input.state)).toBe(false);
+      expect(game.isFull(input.state)).toBe(false);
     });
   });
 });
 
-describe('Board.rowMatch', () => {
+describe('game.rowMatch', () => {
   test('should return true when a row has same data', () => {
     const inputs = [
       {
@@ -100,7 +196,7 @@ describe('Board.rowMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.rowMatch(input.state, input.index)).toBe(true);
+      expect(game.rowMatch(input.state, input.index)).toBe(true);
     });
   });
 
@@ -133,12 +229,12 @@ describe('Board.rowMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.rowMatch(input.state, input.index)).toBe(false);
+      expect(game.rowMatch(input.state, input.index)).toBe(false);
     });
   });
 });
 
-describe('Board.colMatch', () => {
+describe('game.colMatch', () => {
   test('should return true when a column has same data', () => {
     const inputs = [
       {
@@ -168,7 +264,7 @@ describe('Board.colMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.colMatch(input.state, input.index)).toBe(true);
+      expect(game.colMatch(input.state, input.index)).toBe(true);
     });
   });
 
@@ -201,12 +297,12 @@ describe('Board.colMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.colMatch(input.state, input.index)).toBe(false);
+      expect(game.colMatch(input.state, input.index)).toBe(false);
     });
   });
 });
 
-describe('Board.diagonalMatch', () => {
+describe('game.diagonalMatch', () => {
   test('should return true when a diagonal has same data', () => {
     const inputs = [
       {
@@ -228,7 +324,7 @@ describe('Board.diagonalMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.diagonalMatch(input.state, input.index)).toBe(true);
+      expect(game.diagonalMatch(input.state, input.index)).toBe(true);
     });
   });
 
@@ -253,7 +349,7 @@ describe('Board.diagonalMatch', () => {
     ];
 
     inputs.forEach((input) => {
-      expect(board.diagonalMatch(input.state, input.index)).toBe(false);
+      expect(game.diagonalMatch(input.state, input.index)).toBe(false);
     });
   });
 });

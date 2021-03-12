@@ -104,13 +104,13 @@ class Board {
   };
 
   checkWinner = (state: string[]): void => {
-    // Current player has won.
+    // Current player has won
     if (game.hasMatch(state)) {
       this.onGameOver();
       return;
     }
 
-    // Tie.
+    // Tie
     if (game.isFull(state)) {
       this.onGameOver();
       this.currentTurn = Cell.NONE;
